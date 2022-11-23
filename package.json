@@ -2,15 +2,23 @@
   "name": "zlxiao97",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "commit": "git cz"
+  },
   "private": true,
   "dependencies": {},
   "devDependencies": {
     "@nrwl/nx-cloud": "latest",
+    "git-cz": "^4.9.0",
     "nx": "15.2.1",
     "prettier": "^2.6.2"
   },
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "config": {
+    "commitizen": {
+      "path": "git-cz"
+    }
+  }
 }
