@@ -1,0 +1,8 @@
+{
+  "name": "learning-ts",
+  "version": "1.0.0",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^4.9.3"
+  }
+}
