@@ -25,10 +25,6 @@
 // 4. 自动推测匿名函数参数类型，即上下文类型推断
 {
     const names = ['Alice', 'Bob', 'Eve'];
-    names.forEach(function (s) {
-        console.log(s.toUppercase());
-    });
-    // Property 'toUppercase' does not exist on type 'string'. Did you mean 'toUpperCase'?
     names.forEach((s) => {
         console.log(s.toUppercase());
     });
@@ -45,10 +41,9 @@
 // 6. 可选属性
 {
     function printName(obj) {
-        var _a, _b;
         console.log(obj.last.toUpperCase());
         // 'obj.last' is possibly 'undefined'.
-        console.log((_b = (_a = obj.last) === null || _a === void 0 ? void 0 : _a.toUpperCase) === null || _b === void 0 ? void 0 : _b.call(_a));
+        console.log(obj.last?.toUpperCase?.());
     }
     printName({ first: 'Bob' });
     printName({ first: 'Alice', last: 'Alisson' });
@@ -66,7 +61,7 @@
     printId(101);
     printId('202');
     printId({ myID: 22342 });
-    // Argument of type '{ myID: number; }' is not assignable to parameter of type 'string | number'.s
+    // Argument of type '{ myID: number; }' is not assignable to parameter of type 'string | number'.
 }
 // 8. 收窄类型
 {
@@ -101,7 +96,8 @@
         return str;
     }
     let userInput = sanitizeInput('input');
-    // UserInputSanitizedString 只是 type 类型的别名
+    // let userInput: string
+    // UserInputSanitizedString 只是 string 类型的别名
     userInput = 'new input';
 }
 // 10. 接口
@@ -134,7 +130,7 @@
         honey: true,
     };
 }
-// 修改类型
+// 不能修改类型
 {
     // Duplicate identifier 'Animal'.
 }
@@ -174,9 +170,72 @@
     configure('automatic');
     // Argument of type '"automatic"' is not assignable to parameter of type '"auto" | Option'.
 }
-// 14. 对象的字面量类型
+// 14. 对象属性默认不会被认为是字面量类型
 {
     function handleRequest(url, method) { }
     const req = { url: 'https://example.com', method: 'GET' };
+    /*
+      const req: {
+          url: string;
+          method: string;
+      }
+    */
     handleRequest(req.url, req.method);
+    // Argument of type 'string' is not assignable to parameter of type '"GET" | "POST"'.
+}
+// 将变量类型固化为字面量类型
+{
+    function handleRequest(url, method) { }
+    const req = { url: 'https://example.com', method: 'GET' };
+    /*
+      const req: {
+          readonly url: "https://example.com";
+          readonly method: "GET";
+      }
+    */
+    handleRequest(req.url, req.method);
+}
+// 15. 空值检查（开启 strictNullChecks 时）
+{
+    function doSomeThing(x) {
+        if (x === null) {
+            // 收窄
+        }
+        else {
+            console.log(`Hello ${x.toUpperCase()}`);
+        }
+    }
+}
+// 16. 非空断言
+{
+    function liveDangerously(x) {
+        console.log(x.toFixed());
+        // 'x' is possibly 'null' or 'undefined'.
+        console.log(x.toFixed());
+    }
+}
+// 17. 枚举
+{
+    let UserResponse;
+    (function (UserResponse) {
+        UserResponse[UserResponse["No"] = 0] = "No";
+        UserResponse[UserResponse["Yes"] = 1] = "Yes";
+    })(UserResponse || (UserResponse = {}));
+    function respond(recipient, message) { }
+    respond('Princess Caroline', UserResponse.Yes);
+}
+// 18. bigint
+{
+    const oneHundred = BigInt(100);
+    const anotherHundred = 100n;
+}
+// 19. symbol
+{
+    const firstName = Symbol('name');
+    // unique symbol
+    const secondName = Symbol('name');
+    // unique symbol
+    if (firstName === secondName) {
+        // This comparison appears to be unintentional because the types 'typeof firstName' and 'typeof secondName' have no overlap.
+    }
 }

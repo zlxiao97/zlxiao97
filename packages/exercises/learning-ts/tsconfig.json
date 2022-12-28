@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
     "strict": true,
-    "target": "ES2017",
+    "target": "ES2020",
     "module": "ESNext",
     "moduleResolution": "node",
     "jsx": "react",
     "noImplicitAny": true,
     "allowJs": true,
     "strictNullChecks": true,
-    "strictFunctionTypes": true
+    "strictFunctionTypes": true,
+    "lib": ["ES2020", "DOM"]
   }
 }

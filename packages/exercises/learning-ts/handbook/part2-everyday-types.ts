@@ -28,11 +28,6 @@
 {
   const names = ['Alice', 'Bob', 'Eve'];
 
-  names.forEach(function (s) {
-    console.log(s.toUppercase());
-  });
-  // Property 'toUppercase' does not exist on type 'string'. Did you mean 'toUpperCase'?
-
   names.forEach((s) => {
     console.log(s.toUppercase());
   });
@@ -74,7 +69,7 @@
   printId(101);
   printId('202');
   printId({ myID: 22342 });
-  // Argument of type '{ myID: number; }' is not assignable to parameter of type 'string | number'.s
+  // Argument of type '{ myID: number; }' is not assignable to parameter of type 'string | number'.
 }
 
 // 8. 收窄类型
@@ -114,8 +109,9 @@
   }
 
   let userInput = sanitizeInput('input');
+  // let userInput: string
 
-  // UserInputSanitizedString 只是 type 类型的别名
+  // UserInputSanitizedString 只是 string 类型的别名
   userInput = 'new input';
 }
 
@@ -168,23 +164,23 @@
 // 修改接口
 {
   interface Animal {
-    name: '';
+    name: string;
   }
   interface Animal {
-    honey: true;
+    honey: boolean;
   }
   const animal: Animal = {
     name: '',
     honey: true,
   };
 }
-// 修改类型
+// 不能修改类型
 {
   type Animal = {
-    name: '';
+    name: string;
   };
   type Animal = {
-    honey: true;
+    honey: boolean;
   };
   // Duplicate identifier 'Animal'.
 }
@@ -237,7 +233,7 @@
   // Argument of type '"automatic"' is not assignable to parameter of type '"auto" | Option'.
 }
 
-// 14. 对象的字面量类型
+// 14. 对象属性默认不会被认为是字面量类型
 {
   function handleRequest(url: string, method: 'GET' | 'POST') {}
 
@@ -252,11 +248,11 @@
   handleRequest(req.url, req.method);
   // Argument of type 'string' is not assignable to parameter of type '"GET" | "POST"'.
 }
-// 将对象类型转化为字面量类型
+// 将变量类型固化为字面量类型
 {
   function handleRequest(url: string, method: 'GET' | 'POST') {}
-  
-  const req = { url: 'https://example.com', method: 'GET' } as const;
+
+  const req = { url: 'https://example.com', method: 'GET' as const };
   /*
     const req: {
         readonly url: "https://example.com";
@@ -265,4 +261,55 @@
   */
 
   handleRequest(req.url, req.method);
+}
+
+// 15. 空值检查（开启 strictNullChecks 时）
+{
+  function doSomeThing(x: string | null) {
+    if (x === null) {
+      // 收窄
+    } else {
+      console.log(`Hello ${x.toUpperCase()}`);
+    }
+  }
+}
+
+// 16. 非空断言
+{
+  function liveDangerously(x?: number | null) {
+    console.log(x.toFixed());
+    // 'x' is possibly 'null' or 'undefined'.
+
+    console.log(x!.toFixed());
+  }
+}
+
+// 17. 枚举
+{
+  enum UserResponse {
+    No = 0,
+    Yes = 1,
+  }
+
+  function respond(recipient: string, message: UserResponse): void {}
+
+  respond('Princess Caroline', UserResponse.Yes);
+}
+
+// 18. bigint
+{
+  const oneHundred: bigint = BigInt(100);
+
+  const anotherHundred: bigint = 100n;
+}
+
+// 19. symbol
+{
+  const firstName = Symbol('name');
+  // unique symbol
+  const secondName = Symbol('name');
+  // unique symbol
+  if (firstName === secondName) {
+    // This comparison appears to be unintentional because the types 'typeof firstName' and 'typeof secondName' have no overlap.
+  }
 }
