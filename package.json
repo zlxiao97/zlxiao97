@@ -2,16 +2,14 @@
   "name": "zlxiao97",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {
-    "commit": "git cz"
-  },
   "private": true,
-  "dependencies": {},
   "devDependencies": {
     "@nrwl/nx-cloud": "latest",
     "git-cz": "^4.9.0",
+    "husky": "^8.0.2",
+    "lint-staged": "^13.1.0",
     "nx": "15.2.1",
-    "prettier": "^2.6.2"
+    "prettier": "2.8.1"
   },
   "workspaces": [
     "packages/*",
@@ -21,5 +19,14 @@
     "commitizen": {
       "path": "git-cz"
     }
+  },
+  "lint-staged": {
+    "*.{js,md,css,scss,yaml,yml}": [
+      "prettier --write"
+    ]
+  },
+  "scripts": {
+    "commit": "git cz",
+    "prepare": "husky install"
   }
 }
