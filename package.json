@@ -13,7 +13,8 @@
   },
   "workspaces": [
     "packages/*",
-    "packages/*/*"
+    "packages/*/*",
+    "docs"
   ],
   "config": {
     "commitizen": {
@@ -27,6 +28,8 @@
   },
   "scripts": {
     "commit": "git cz",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "build": "nx run-many --target build --all",
+    "test": "nx run-many --target test --all"
   }
 }
