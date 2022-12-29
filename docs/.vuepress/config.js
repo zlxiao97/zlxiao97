@@ -1,7 +1,7 @@
 import { defineUserConfig } from 'vuepress'
 
 export default defineUserConfig({
-  base: '/zlxiao97',
+  base: '/zlxiao97/',
   locales: {
     '/': {
       lang: 'zh-CN',
